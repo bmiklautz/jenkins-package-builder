@@ -31,7 +31,7 @@ def generate_source_package():
 
 	source = os.path.join(config['WORKSPACE'], sourcedir)
 
-	spec=get_env("JPB_RPM_SPECFIE")
+	spec=get_env("JPB_RPM_SPECFILE")
 	if not spec:
 		files =	os.listdir(source)
 		for i in files:
