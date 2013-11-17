@@ -38,6 +38,13 @@ def generate_source_package():
 			if i.endswith(".spec"):
 				spec = os.path.join(source, i)
 				break
+		if not spec:
+			logger.error("No spec file found")
+			sys.exit(1)
+	else:
+		if not os.path.isfile(spec):
+			logger.error("Spec file specified with JPB_RPM_SPECFILE not found")
+			sys.exit(1)
 
 	logger.info("Using specfile %s" % spec)
 	logger.info("Gathering source informations")
