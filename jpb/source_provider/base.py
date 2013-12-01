@@ -3,15 +3,15 @@
 class SourceProviderBase():
 	@classmethod
 	def type(self):
-		raise NotImplementedErrora
+		raise NotImplementedError
 
 	def commit_short(self):
-		raise NotImplementedErrora
+		raise NotImplementedError
 	
 	def commit_version_string(self):
-		raise NotImplementedErrora
+		raise NotImplementedError
 
 	def generate_tarball(self, name, version, outdir):
-		raise NotImplementedErrora
+		raise NotImplementedError
 
 # vim:foldmethod=marker ts=2 ft=python ai sw=2
