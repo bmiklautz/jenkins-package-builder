@@ -12,9 +12,10 @@ import logging
 SRC_DIR="source"
 config = {}
 
-def generate_source_package():
+def _common_init():
 	init_logging()
-	logger = logging.getLogger("%s:generate_source_package" % __name__)
+	logger = logging.getLogger("%s:init" % __name__)
+
 	for i in ('WORKSPACE', 'BUILD_ID'):
 		config[i] = get_env(i)
 
@@ -22,8 +23,16 @@ def generate_source_package():
 		logger.error("WORKSPACE not set")
 		sys.exit(1)
 
+	if not config['BUILD_ID']:
+		logger.error("BUILD_ID not set")
+		sys.exit(1)
+
 	os.chdir(config["WORKSPACE"])
 	cleanup_workspace()
+
+def generate_source_package():
+	_common_init()
+	logger = logging.getLogger("%s:generate_source_package" % __name__)
 
 	sourcedir = get_env("JPB_SOURCE_DIR")
 	if not sourcedir:
