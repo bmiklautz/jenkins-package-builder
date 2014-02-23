@@ -35,7 +35,7 @@ class GitSourceProvider(SourceProviderBase):
 	def generate_tarball(self, name, version):
 		ptype="tar.gz"
 		cmd = list(self.basecmd)
-		cmd = cmd + [ "archive", "--format=%s" % (ptype), "--prefix="+name+"/", "-o"]
+		cmd = cmd + [ "archive", "--format=%s" % (ptype), "--prefix="+name+"-"+version+"/", "-o"]
 		outfile="%s-%s+git%s.%s" % (name, version, self.commit_short(), ptype)
 		cmd.append(outfile)
 		cmd.append(self.commit)
