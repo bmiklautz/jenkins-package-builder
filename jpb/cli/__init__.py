@@ -92,8 +92,11 @@ def generate_binary_package():
 		sys.exit(1)
 	logger.info("Using %s" % srpm)
 
+	arch = get_env("architecture")
+	distri = get_env("distribution")
+	logger.info("Building for distribution %s and architecture %s" % (distri, arch))
 # Todo choose builder depending on host/user setting
-	builder = pbmock(config['WORKSPACE'])
+	builder = pbmock(config['WORKSPACE'], distribution = distri, architecture = arch)
 	if not builder.build(srpm):
 		logger.error("Build failed see log for details")
 		sys.exit(1)
