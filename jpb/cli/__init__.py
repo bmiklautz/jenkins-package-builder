@@ -8,6 +8,9 @@ import os
 import sys
 import glob
 import logging
+from jpb.build_provider.mock import mock as pbmock 
+#from jpb.build_provider.build import build as pbbuild
+
 
 SRC_DIR="source"
 config = {}
@@ -28,10 +31,11 @@ def _common_init():
 		sys.exit(1)
 
 	os.chdir(config["WORKSPACE"])
-	cleanup_workspace()
 
 def generate_source_package():
 	_common_init()
+	cleanup_workspace([".rpm", ".tar.gz"])
+	rpm.clean_rootdir(rpm.TOPDIR)
 	logger = logging.getLogger("%s:generate_source_package" % __name__)
 
 	sourcedir = get_env("JPB_SOURCE_DIR")
@@ -71,4 +75,27 @@ def generate_source_package():
 
 	os.unlink(specfile)
 	os.unlink(tarball)
+
+def generate_binary_package():
+	_common_init()
+	cleanup_workspace(['.rpm'],['src.rpm'])
+	logger = logging.getLogger("%s:generate_binary_package" % __name__)
+	srpm = ""
+	# find srpm
+	files = os.listdir(".")
+	for i in files:
+		if i.endswith(".src.rpm"):
+			srpm = i
+			break
+	if not srpm:
+		logger.error("No src.rpm found")
+		sys.exit(1)
+	logger.info("Using %s" % srpm)
+
+# Todo choose builder depending on host/user setting
+	builder = pbmock(config['WORKSPACE'])
+	if not builder.build(srpm):
+		logger.error("Build failed see log for details")
+		sys.exit(1)
+
 # vim:foldmethod=marker ts=2 ft=python ai sw=2

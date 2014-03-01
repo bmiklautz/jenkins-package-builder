@@ -19,12 +19,17 @@ def get_env(name):
 		return ""  
 	return os.environ[name] 
 
-def cleanup_workspace():
-	filelist=[]
-	for i in ["*.rpm", "*.spec", "*.tar.gz"]:
-		filelist.extend(glob.glob(i))
-	for i in filelist:
-		os.unlink(i)
-	rpm.clean_rootdir(rpm.TOPDIR)
+def cleanup_workspace(types, excludes = []):
+	files =	os.listdir(".")
+	for i in files:
+		ignore = False
+		for e in excludes:
+			if i.endswith(e):
+				ignore = True;
+		if ignore :
+			continue
+		for t  in types:
+			if i.endswith(t):
+				os.unlink(i)
 
 # vim:foldmethod=marker ts=2 ft=python ai sw=2

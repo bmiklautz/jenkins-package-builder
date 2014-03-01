@@ -10,7 +10,8 @@ setup(
 	zip_safe = False,
 	entry_points = {
 		'console_scripts': [
-			'jpb_generate_source_package = jpb.cli:generate_source_package'
+			'jpb_generate_source_package = jpb.cli:generate_source_package',
+			'jpb_generate_binary_package = jpb.cli:generate_binary_package'
 		],
 	},
 	author = "Bernhard Miklautz",
