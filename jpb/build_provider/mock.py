@@ -59,6 +59,8 @@ class mock(BuildProviderBase):
 
 		if subprocess.call(cmd):
 			return False
+		# mock rebuilds the srpm. so the "old" one isn't required anymore.
+		os.unlink(srpm)
 		return self._copyRPMs()
 	
 # vim:foldmethod=marker ts=2 ft=python ai sw=2
