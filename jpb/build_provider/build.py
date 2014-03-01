@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from jpb.build_provider.base import BuildProviderBase as BuildProviderBase
+from jpb.build_provider.base import DistNotAvailable as DistNotAvailable
 import os
 import subprocess
 import platform
@@ -11,9 +12,6 @@ BUILD_CONFIG_PATH = BUILD_BASE_PATH + "configs"
 BUILD_CONF_EXTENSION = "conf"
 BUILD_RPM_HOME="home/abuild/rpmbuild/RPMS"
 BUILD_ROOT_PREFIX="build-"
-
-class DistNotAvailable(Exception):
-	pass
 
 class CanNotClean(Exception):
 	pass

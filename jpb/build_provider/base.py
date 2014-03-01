@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+class DistNotAvailable(Exception):
+	pass
+
 class BuildProviderBase():
 	@classmethod
 	def type(self):
