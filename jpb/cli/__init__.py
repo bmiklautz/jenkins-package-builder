@@ -9,8 +9,9 @@ import sys
 import glob
 import logging
 from jpb.build_provider.mock import mock as pbmock 
+from jpb.repo_provider.createrepo import createrepo
+from jpb.repo_provider.createrepo import createrepo
 #from jpb.build_provider.build import build as pbbuild
-
 
 SRC_DIR="source"
 config = {}
@@ -19,7 +20,7 @@ def _common_init():
 	init_logging()
 	logger = logging.getLogger("%s:init" % __name__)
 
-	for i in ('WORKSPACE', 'BUILD_ID'):
+	for i in ('WORKSPACE', 'BUILD_ID', 'JOB_NAME'):
 		config[i] = get_env(i)
 
 	if not config['WORKSPACE']:
@@ -99,6 +100,18 @@ def generate_binary_package():
 	builder = pbmock(config['WORKSPACE'], distribution = distri, architecture = arch)
 	if not builder.build(srpm):
 		logger.error("Build failed see log for details")
+		sys.exit(1)
+
+def provide_package():
+	_common_init()
+	logger = logging.getLogger("%s:provide_package" % __name__)
+	arch = get_env("architecture")
+	distri = get_env("distribution")
+	reponame = get_env("REPOS")
+	repositorypath = get_env("REPOSITORY")
+	rp = createrepo(config, distribution=distri, architecture=arch, repopath=repositorypath, reponame=reponame)
+	if not rp.add_to_repo(glob.glob('*.rpm')):
+		logger.error("Failed adding files to the repository")
 		sys.exit(1)
 
 # vim:foldmethod=marker ts=2 ft=python ai sw=2
