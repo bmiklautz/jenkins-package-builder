@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
+from __future__ import absolute_import
 import os
 import shutil
 import re
+import rpm
 
 TOPDIR="rpmbuild"
 
@@ -16,6 +18,14 @@ def prepare_rootdir(topdir):
 
 def clean_rootdir(topdir):
 	shutil.rmtree(topdir, True)
+
+def get_rpm_information(filename):
+	ts = rpm.ts()
+	f = open(filename, 'r')
+	ts.setVSFlags(rpm._RPMVSF_NOSIGNATURES)
+	hdr = ts.hdrFromFdno(f)
+	f.close()
+	return { 'name': hdr[rpm.RPMTAG_NAME], 'version' : hdr[rpm.RPMTAG_VERSION], 'release': hdr[rpm.RPMTAG_RELEASE], 'epoch': hdr[rpm.RPMTAG_EPOCH], 'arch': hdr[rpm.RPMTAG_ARCH] }
 
 class SpecFile:
 	def __init__(self, specfile):
