@@ -43,6 +43,10 @@ class build(BuildProviderBase):
 		gid = os.getgid()
 		self.basecmd = ["sudo", "-n", "/usr/bin/build", "--root=%s" % self.buildroot, "--uid", "%d:%d" % (uid,gid)]
 		self.buildcmd =  self.basecmd + ["--arch", self.architecture, "--clean"]
+		if (self.distribution):
+			self.buildcmd =  self.basecmd + ["--arch", self.architecture, "--clean", "--dist", self.distribution]
+		else:
+			self.buildcmd =  self.basecmd + ["--arch", self.architecture, "--clean"]
 		self.killcmd =  self.basecmd + ["--kill"]
 
 	def _checkConfig(self, distribution):
