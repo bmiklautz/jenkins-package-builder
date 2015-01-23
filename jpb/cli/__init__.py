@@ -8,7 +8,7 @@ import os
 import sys
 import glob
 import logging
-from jpb.build_provider.mock import mock as pbmock 
+import platform
 from jpb.repo_provider.createrepo import createrepo
 from jpb.repo_provider.createrepo import createrepo
 #from jpb.build_provider.build import build as pbbuild
@@ -96,8 +96,15 @@ def generate_binary_package():
 	arch = get_env("architecture")
 	distri = get_env("distribution")
 	logger.info("Building for distribution %s and architecture %s" % (distri, arch))
-# Todo choose builder depending on host/user setting
-	builder = pbmock(config['WORKSPACE'], distribution = distri, architecture = arch)
+	if (platform.dist()[0] == "fedora"):
+		from jpb.build_provider.mock import mock as cbuilder
+	elif (platform.dist()[0] == "SuSE"):
+		from jpb.build_provider.build import build as cbuilder
+	else:
+		logger.error("Currently unsupported build platform")
+		sys.exit(1)
+
+	builder = cbuilder(config['WORKSPACE'], distribution = distri, architecture = arch)
 	if not builder.build(srpm):
 		logger.error("Build failed see log for details")
 		sys.exit(1)
