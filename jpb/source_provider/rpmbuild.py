@@ -12,7 +12,7 @@ def generate_src_package(specfile, tarball):
 	srpmdir = os.path.join(topdir, "SRPMS")
 	rpm.prepare_rootdir(topdir)		
 	shutil.copy(tarball, sourcedir)
-	subprocess.call(["rpmbuild","--define", "_topdir "+ topdir, "-bs", specfile])
+        subprocess.call(["rpmbuild","--define", "_topdir "+ topdir, "--nodeps", "-bs", specfile])
 	for filename in glob.glob(os.path.join(srpmdir, '*.src.rpm')):
 	    shutil.copy(filename, ".")
 	rpm.clean_rootdir(topdir)
