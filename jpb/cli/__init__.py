@@ -66,7 +66,7 @@ def generate_source_package():
 	sp = get_source_provider(source)
 
 	commit_string = sp.commit_version_string()
-	release = generate_build_version(sf.release, 1, commit_string)
+	release = generate_build_version(sf.release, config['BUILD_ID'], commit_string)
 	tarball=sp.generate_tarball(sf.name, sf.version)
 	specfile = sf.name+".spec"
 	logger.info("Generating updated spec file")

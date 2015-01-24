@@ -12,7 +12,7 @@ def increase_version_number(version):
 	return version + "+0"
 
 def generate_build_version(origversion, build_number, commitversion):
-	return "%s~%s%s" %(increase_version_number(origversion), create_timestamp(), commitversion)
+	return "%s~%s.%s%s" %(increase_version_number(origversion), create_timestamp(), build_number, commitversion)
 
 def get_env(name): 
 	if not os.environ.has_key(name): 
