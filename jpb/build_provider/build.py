@@ -41,7 +41,10 @@ class build(BuildProviderBase):
 		self.rpmdir = os.path.join(self.buildroot, BUILD_RPM_HOME)
 		uid = os.getuid()
 		gid = os.getgid()
-		self.basecmd = ["sudo", "-n", "/usr/bin/build", "--root=%s" % self.buildroot, "--uid", "%d:%d" % (uid,gid)]
+		if self.architecture != "x86_64":
+			self.basecmd = ["sudo", "-n", "/usr/bin/linux32", "/usr/bin/build", "--root=%s" % self.buildroot, "--uid", "%d:%d" % (uid,gid)]
+		else:
+			self.basecmd = ["sudo", "-n", "/usr/bin/build", "--root=%s" % self.buildroot, "--uid", "%d:%d" % (uid,gid)]
 		self.buildcmd =  self.basecmd + ["--arch", self.architecture, "--clean"]
 		if (self.distribution):
 			self.buildcmd =  self.basecmd + ["--arch", self.architecture, "--clean", "--dist", self.distribution]
