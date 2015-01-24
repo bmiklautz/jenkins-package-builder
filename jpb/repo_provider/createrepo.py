@@ -49,28 +49,26 @@ class createrepo(RepoProviderBase):
 			raise NoFilesToAdd
 		repos = []	
 		logger = logging.getLogger("%s" % __name__)
-		#repo path format: repopath/dist/arch/package
-		# dist will be obmitted if not set
+		# repo_path is the location where the repo should go
+		# might be /srv/repos/rpm/fedora/21
+		# appended will be the reponame and arch
+		repo_base_path = os.path.join(self.repopath, self.reponame)
 		for i in filelist:
-			arch = self._get_rpm_arch(i)
-			repopath = ""
-			if self.distribution:
-				repopath = os.path.join(self.repopath, self.distribution, arch, self.reponame)	
+			if i.endswith(".src.rpm"):
+				arch = "source"
 			else:
-				repopath = os.path.join(self.repopath, arch, self.reponame)	
+				arch = self._get_rpm_arch(i)
+			repopath = os.path.join(repo_base_path, arch)
 			# copy the file to the d
 			try:
 				os.stat(repopath)
 			except:
 				os.makedirs(repopath) 
 			shutil.copy(i, repopath)
-			if not repopath in repos:
-				repos.append(repopath)
-		for repo in repos:
-			logger.info("Updating repo %s" % repo)
-			cmd = ["createrepo", repo]
-			if subprocess.call(cmd):
-				return False
+		logger.info("Updating repo %s" % repo_base_path)
+		cmd = ["createrepo", "--update", repo_base_path]
+		if subprocess.call(cmd):
+			return False
 		return True
 			
 # vim:foldmethod=marker ts=2 ft=python ai sw=2

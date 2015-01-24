@@ -114,7 +114,7 @@ def provide_package():
 	logger = logging.getLogger("%s:provide_package" % __name__)
 	arch = get_env("architecture")
 	distri = get_env("distribution")
-	reponame = get_env("REPOS")
+	reponame = get_env("REPONAME")
 	repositorypath = get_env("REPOSITORY")
 	rp = createrepo(config, distribution=distri, architecture=arch, repopath=repositorypath, reponame=reponame)
 	if not rp.add_to_repo(glob.glob('*.rpm')):
