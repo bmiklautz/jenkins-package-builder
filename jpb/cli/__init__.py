@@ -20,15 +20,15 @@ def _common_init():
 	init_logging()
 	logger = logging.getLogger("%s:init" % __name__)
 
-	for i in ('WORKSPACE', 'BUILD_ID', 'JOB_NAME'):
+	for i in ('WORKSPACE', 'BUILD_NUMBER', 'JOB_NAME'):
 		config[i] = get_env(i)
 
 	if not config['WORKSPACE']:
 		logger.error("WORKSPACE not set")
 		sys.exit(1)
 
-	if not config['BUILD_ID']:
-		logger.error("BUILD_ID not set")
+	if not config['BUILD_NUMBER']:
+		logger.error("BUILD_NUMBER not set")
 		sys.exit(1)
 
 	os.chdir(config["WORKSPACE"])
@@ -66,7 +66,7 @@ def generate_source_package():
 	sp = get_source_provider(source)
 
 	commit_string = sp.commit_version_string()
-	release = generate_build_version(sf.release, config['BUILD_ID'], commit_string)
+	release = generate_build_version(sf.release, config['BUILD_NUMBER'], commit_string)
 	tarball=sp.generate_tarball(sf.name, sf.version)
 	specfile = sf.name+".spec"
 	logger.info("Generating updated spec file")
