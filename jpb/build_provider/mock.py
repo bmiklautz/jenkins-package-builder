@@ -32,7 +32,7 @@ class mock(BuildProviderBase):
 		return True
 
 	def _checkConfig(self):
-		return os.path.exists(os.path.join("/etc/mock", "%s-%s.cfg" % (self.distribution, self.architecture)))
+		return os.path.exists(os.path.join("/etc/mock", "fedora-%s-%s.cfg" % (self.distribution, self.architecture)))
 
 	def __init__(self, workspace, distribution = "" , architecture = ""):
 		if not architecture:
@@ -45,7 +45,7 @@ class mock(BuildProviderBase):
 		self.mockpath = os.path.join(self.workspace, MOCK_BASE_PATH)
 		self.basecmd = ["/usr/bin/mock"]
 		if (self.distribution):
-			self.buildcmd =  self.basecmd + ["--resultdir", self.mockpath, "-r", "%s-%s" % (self.distribution, self.architecture) ]
+			self.buildcmd =  self.basecmd + ["--resultdir", self.mockpath, "-r", "fedora-%s-%s" % (self.distribution, self.architecture) ]
 		else:
 			self.buildcmd =  self.basecmd + ["--resultdir", self.mockpath]
 		self._cleanBuildDir()
