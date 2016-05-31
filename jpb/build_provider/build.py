@@ -1,6 +1,8 @@
 #!/usr/bin/env python
+from __future__ import with_statement
 from jpb.build_provider.base import BuildProviderBase as BuildProviderBase
 from jpb.build_provider.base import DistNotAvailable as DistNotAvailable
+from jpb.utils import get_env
 import os
 import subprocess
 import platform
@@ -27,6 +29,8 @@ class build(BuildProviderBase):
 		if not architecture:
 			architecture = platform.machine()
 		BuildProviderBase.__init__(self, workspace, distribution, architecture)
+		self.repos = get_env("BUILD_REPOSITORY_EXTRA")
+		self.rpms = get_env("BUILD_RPM_EXTRA")
 
 		if self.distribution and not self._checkConfig(self.distribution):
 			raise DistNotAvailable
@@ -50,6 +54,18 @@ class build(BuildProviderBase):
 			self.buildcmd =  self.basecmd + ["--arch", self.architecture, "--clean", "--dist", self.distribution]
 		else:
 			self.buildcmd =  self.basecmd + ["--arch", self.architecture, "--clean"]
+		if (self.repos):
+			for r in self.repos.split(','):
+				self.buildcmd = self.buildcmd + ["--repository",  r]
+		if (self.rpms):
+			self.buildcmd = self.buildcmd + ["--rpms",  self.rpms]
+		if (self.macros):
+			if(os.path.isfile(self.macros)):
+				with(open(self.macros)) as f:
+					for line in f.readlines():
+						self.buildcmd = self.buildcmd + ["--define",  line.rstrip('\n')]
+			else:
+				self.logger.warn("macro file supplied but can't be opened!")
 		self.killcmd =  self.basecmd + ["--kill"]
 
 	def _checkConfig(self, distribution):

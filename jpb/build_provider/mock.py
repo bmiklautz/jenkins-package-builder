@@ -4,6 +4,7 @@ import os
 import subprocess
 import glob
 import shutil
+from jpb.utils import get_env
 
 from jpb.build_provider.base import BuildProviderBase as BuildProviderBase
 from jpb.build_provider.base import DistNotAvailable as DistNotAvailable
@@ -38,16 +39,19 @@ class mock(BuildProviderBase):
 		if not architecture:
 			architecture = platform.machine()
 		BuildProviderBase.__init__(self, workspace, distribution, architecture)
+		self.mock_cfg = get_env("MOCK_CFG")
 
 		if self.distribution and not self._checkConfig():
 			raise DistNotAvailable
 
 		self.mockpath = os.path.join(self.workspace, MOCK_BASE_PATH)
-		self.basecmd = ["/usr/bin/mock"]
-		if (self.distribution):
-			self.buildcmd =  self.basecmd + ["--resultdir", self.mockpath, "-r", "fedora-%s-%s" % (self.distribution, self.architecture) ]
-		else:
-			self.buildcmd =  self.basecmd + ["--resultdir", self.mockpath]
+		self.basecmd = ["/usr/bin/mock", "--resultdir", self.mockpath]
+		if (self.mock_cfg):
+			self.buildcmd =  self.basecmd + ["-r", self.mock_cfg]
+		elif (self.distribution):
+			self.buildcmd =  self.basecmd + ["-r", "fedora-%s-%s" % (self.distribution, self.architecture)]
+		if (self.macros):
+			self.buildcmd =  self.basecmd + ["--macro-file=%s" % self.macros]
 		self._cleanBuildDir()
 
 	def build(self, srpm):
