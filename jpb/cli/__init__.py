@@ -39,6 +39,7 @@ def generate_source_package():
 	cleanup_workspace([".rpm", ".tar.gz"])
 	rpm.clean_rootdir(rpm.TOPDIR)
 	logger = logging.getLogger("%s:generate_source_package" % __name__)
+	no_scm = get_env("JPB_SOURCE_NO_SCM")
 
 	sourcedir = get_env("JPB_SOURCE_DIR")
 	if not sourcedir:
@@ -48,8 +49,7 @@ def generate_source_package():
 
 	spec=get_env("JPB_RPM_SPECFILE")
 	if not spec:
-		files =	os.listdir(source)
-		for i in files:
+		for i in os.listdir(source):
 			if i.endswith(".spec"):
 				spec = os.path.join(source, i)
 				break
@@ -64,22 +64,28 @@ def generate_source_package():
 	logger.info("Using specfile %s" % spec)
 	logger.info("Gathering source informations")
 	sf = rpm.SpecFile(spec)
-	sp = get_source_provider(source)
 
-	commit_string = sp.commit_version_string()
-	release = generate_build_version(sf.release, config['BUILD_NUMBER'], commit_string)
-	tarball=sp.generate_tarball(sf.name, sf.version)
-	specfile = sf.name+".spec"
-	logger.info("Generating updated spec file")
-	sf.write(specfile, tarball, release)
+	if no_scm:
+		specfile = spec
+		tarball = sf.get_source_name()
+	else:
+		sp = get_source_provider(source)
+		commit_string = sp.commit_version_string()
+		release = generate_build_version(sf.release, config['BUILD_NUMBER'], commit_string)
+		tarball=sp.generate_tarball(sf.name, sf.version)
+		specfile = sf.name+".spec"
+		logger.info("Generating updated spec file %s" % specfile)
+		sf.write(specfile, tarball, release)
+
 	logger.info("Generating source package")
 	files.append(tarball)
 	files = files + sf.get_additional_sources()
-	if not rpmbuild.generate_src_package(specfile, files):
+	if not rpmbuild.generate_src_package(specfile, files, sourcedir):
 		logger.error("Problem while generating the source package")
 
-	os.unlink(specfile)
-	os.unlink(tarball)
+	if not no_scm:
+		os.unlink(specfile)
+		os.unlink(tarball)
 
 def generate_binary_package():
 	_common_init()
@@ -112,6 +118,7 @@ def generate_binary_package():
 	if not builder.build(srpm):
 		logger.error("Build failed see log for details")
 		sys.exit(1)
+
 
 def provide_package():
 	_common_init()
