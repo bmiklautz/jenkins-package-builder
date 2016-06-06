@@ -35,6 +35,7 @@ def _common_init():
 
 def generate_source_package():
 	_common_init()
+	files=[]
 	cleanup_workspace([".rpm", ".tar.gz"])
 	rpm.clean_rootdir(rpm.TOPDIR)
 	logger = logging.getLogger("%s:generate_source_package" % __name__)
@@ -72,7 +73,10 @@ def generate_source_package():
 	logger.info("Generating updated spec file")
 	sf.write(specfile, tarball, release)
 	logger.info("Generating source package")
-	rpmbuild.generate_src_package(specfile, tarball)
+	files.append(tarball)
+	files = files + sf.get_additional_sources()
+	if not rpmbuild.generate_src_package(specfile, files):
+		logger.error("Problem while generating the source package")
 
 	os.unlink(specfile)
 	os.unlink(tarball)

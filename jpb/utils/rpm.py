@@ -33,12 +33,12 @@ class SpecFile:
 		f = open(specfile, "r")
 		self.content = f.readlines()
 		f.close()
-		self.source=[]
-		self.source_line=[]
-		name = re.compile("Name:\s+(.*)$")
-		version = re.compile("Version:\s+(.*)$")
-		release = re.compile("Release:\s+(.*)$")
-		source = re.compile("Source(\d+):\s+(\S+)$")
+		self.sources=[]
+		self.source_name = ""
+		name = re.compile("Name:\s*(.*)$")
+		version = re.compile("Version:\s*(.*)$")
+		release = re.compile("Release:\s*(.*)$")
+		source = re.compile("Source(\d*):\s*(\S+)$")
 		line = 0
 		for i in self.content:
 			match = version.match(i)
@@ -53,8 +53,12 @@ class SpecFile:
 
 			match = source.match(i)
 			if match:
-				self.source.append(match.group(2))
-				self.source_line.append(line)
+				first = match.group(1)
+				if (first == '' or first == "0"):
+					self.source_line = line
+					self.source_name = match.group(2)
+				else:
+					self.sources.append(match.group(2))
 
 			match = name.match(i)
 			if match:
@@ -62,13 +66,17 @@ class SpecFile:
 
 			line = line + 1
 
+	def get_additional_sources(self):
+		return self.sources
+
+	def get_source_name(self):
+		return self.source_name
+
 	def write(self, outfile, tarball, release):
 #		self.content[self.version_line] = "Version: " + version
 		self.content[self.release_line] = "Release:  %s\n" % (release)
-		if (len(self.source) > 1):
-			for i in self.source_line[0:]:
-				del self.content[i]
-		self.content[self.source_line[0]] = "Source:  %s\n" % tarball
+		if self.source_line:
+			self.content[self.source_line] = "Source0: %s\n" % tarball
 		f = open(outfile, "w")
 		for i in self.content:
 			f.write(i)
