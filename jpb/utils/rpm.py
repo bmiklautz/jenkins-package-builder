@@ -34,11 +34,13 @@ class SpecFile:
 		self.content = f.readlines()
 		f.close()
 		self.sources=[]
+		self.patches=[]
 		self.source_name = ""
 		name = re.compile("Name:\s*(.*)$")
 		version = re.compile("Version:\s*(.*)$")
 		release = re.compile("Release:\s*(.*)$")
 		source = re.compile("Source(\d*):\s*(\S+)$")
+		patch = re.compile("Patch(\d*):\s*(\S+)$")
 		line = 0
 		for i in self.content:
 			match = version.match(i)
@@ -64,10 +66,14 @@ class SpecFile:
 			if match:
 				self.name=match.group(1)
 
+			match = patch.match(i)
+			if match:
+				self.patches.append(match.group(2))
+
 			line = line + 1
 
 	def get_additional_sources(self):
-		return self.sources
+		return self.sources + self.patches
 
 	def get_source_name(self):
 		return self.source_name
