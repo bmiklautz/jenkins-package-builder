@@ -31,6 +31,7 @@ class build(BuildProviderBase):
 		BuildProviderBase.__init__(self, workspace, distribution, architecture)
 		self.repos = get_env("BUILD_REPOSITORY_EXTRA")
 		self.rpms = get_env("BUILD_RPM_EXTRA")
+		self.root = get_env("BUILD_ROOT")
 
 		if self.distribution and not self._checkConfig(self.distribution):
 			raise DistNotAvailable
@@ -41,7 +42,10 @@ class build(BuildProviderBase):
 		else:
 			builddir = builddir + self.distribution
 		builddir = builddir + "/" + self.architecture
-		self.buildroot = os.path.join(self.workspace, builddir)
+		if (self.root):
+			self.buildroot = os.path.join(self.root, builddir)
+		else:
+			self.buildroot = os.path.join(self.workspace, builddir)
 		self.rpmdir = os.path.join(self.buildroot, BUILD_RPM_HOME)
 		uid = os.getuid()
 		gid = os.getgid()
