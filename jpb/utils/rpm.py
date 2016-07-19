@@ -36,6 +36,7 @@ class SpecFile:
 		self.sources=[]
 		self.patches=[]
 		self.source_name = ""
+		self.source_line = ""
 		name = re.compile("Name:\s*(.*)$")
 		version = re.compile("Version:\s*(.*)$")
 		release = re.compile("Release:\s*(.*)$")
