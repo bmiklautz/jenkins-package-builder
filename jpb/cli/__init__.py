@@ -71,7 +71,8 @@ def generate_source_package():
 	else:
 		sp = get_source_provider(source)
 		commit_string = sp.commit_version_string()
-		release = generate_build_version(sf.release, config['BUILD_NUMBER'], commit_string)
+		#release = generate_build_version(sf.release, config['BUILD_NUMBER'], commit_string)
+		release = sf.release
 		tarball=sp.generate_tarball(sf.name, sf.version)
 		specfile = sf.name+".spec"
 		logger.info("Generating updated spec file %s" % specfile)
@@ -110,6 +111,8 @@ def generate_binary_package():
 		from jpb.build_provider.mock import mock as cbuilder
 	elif (platform.dist()[0] == "SuSE"):
 		from jpb.build_provider.build import build as cbuilder
+	elif (platform.dist()[0] == "debian"):
+		from jpb.build_provider.mock import mock as cbuilder
 	else:
 		logger.error("Currently unsupported build platform")
 		sys.exit(1)

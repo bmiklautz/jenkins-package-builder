@@ -11,7 +11,7 @@ setup(
 	entry_points = {
 		'console_scripts': [
 			'jpb_generate_source_package = jpb.cli:generate_source_package',
-			'jpb_build_source_package = jpb.cli:build_source_package',
+			'jpb_generate_binary_package = jpb.cli:generate_binary_package',
 			'jpb_provide_package = jpb.cli:provide_package'
 		],
 	},
