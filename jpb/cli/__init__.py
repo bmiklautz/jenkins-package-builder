@@ -110,6 +110,8 @@ def generate_binary_package():
 		from jpb.build_provider.mock import mock as cbuilder
 	elif (platform.dist()[0] == "SuSE"):
 		from jpb.build_provider.build import build as cbuilder
+	elif (platform.dist()[0] == "debian"):
+		from jpb.build_provider.mock import mock as cbuilder
 	else:
 		logger.error("Currently unsupported build platform")
 		sys.exit(1)
