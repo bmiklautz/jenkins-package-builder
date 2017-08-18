@@ -33,7 +33,7 @@ class mock(BuildProviderBase):
 		return True
 
 	def _checkConfig(self):
-		return os.path.exists(os.path.join("/etc/mock", "fedora-%s-%s.cfg" % (self.distribution, self.architecture)))
+		return os.path.exists(os.path.join("/etc/mock", "%s-%s.cfg" % (self.distribution, self.architecture)))
 
 	def __init__(self, workspace, distribution = "" , architecture = ""):
 		if not architecture:
@@ -49,7 +49,7 @@ class mock(BuildProviderBase):
 		if (self.mock_cfg):
 			self.buildcmd =  self.basecmd + ["-r", self.mock_cfg]
 		elif (self.distribution):
-			self.buildcmd =  self.basecmd + ["-r", "fedora-%s-%s" % (self.distribution, self.architecture)]
+			self.buildcmd =  self.basecmd + ["-r", "%s-%s" % (self.distribution, self.architecture)]
 		if (self.macros):
 			self.buildcmd =  self.basecmd + ["--macro-file=%s" % self.macros]
 		self._cleanBuildDir()
