@@ -1,0 +1,20 @@
+Source: jenkins-package-builder
+Section: admin
+Priority: extra
+Maintainer: Ana Guerrero <ana-externe.guerrero@edf.fr>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.6
+Homepage: https://github.com/bmiklautz/jenkins-package-builder
+Vcs-Browser: https://github.com/edf-hpc/jenkins-package-builder
+
+Package: jenkins-package-builder
+Architecture: all
+Depends: createrepo,
+         mock,
+         python,
+         python-rpm,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: Jenkins RPM build scripts
+ This package provides scripts to build RPM packages inside
+ Jenkins.
