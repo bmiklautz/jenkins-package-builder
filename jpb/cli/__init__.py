@@ -71,7 +71,10 @@ def generate_source_package():
 	else:
 		sp = get_source_provider(source)
 		commit_string = sp.commit_version_string()
-		release = generate_build_version(sf.release, config['BUILD_NUMBER'], commit_string)
+		if get_env("USE_ORIG_VERSION"):
+			release = sf.release
+		else:
+			release = generate_build_version(sf.release, config['BUILD_NUMBER'], commit_string)
 		tarball=sp.generate_tarball(sf.name, sf.version)
 		specfile = sf.name+".spec"
 		logger.info("Generating updated spec file %s" % specfile)
