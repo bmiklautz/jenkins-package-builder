@@ -13,6 +13,7 @@ Depends: createrepo,
          mock,
          python,
          python-rpm,
+         yum-utils,
          ${misc:Depends},
          ${shlibs:Depends}
 Description: Jenkins RPM build scripts
