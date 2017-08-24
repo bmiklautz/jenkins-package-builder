@@ -62,8 +62,8 @@ class mock(BuildProviderBase):
   def __init__(self, workspace, distribution = "" , architecture = ""):
     if not architecture:
         architecture = platform.machine()
-        BuildProviderBase.__init__(self, workspace, distribution, architecture)
 
+    BuildProviderBase.__init__(self, workspace, distribution, architecture)
     self.repos = get_env("MOCK_REPOSITORY_EXTRA")
 
     self.mock_cfg = get_env("MOCK_CFG")
