@@ -3,6 +3,7 @@ import platform
 import os
 import subprocess
 import glob
+import sys
 import shutil
 from jpb.utils import get_env
 import tempfile
@@ -77,7 +78,6 @@ class mock(BuildProviderBase):
         if not self.mock_cfg.endswith(".cfg"):
             self.mock_cfg = "/etc/mock/%s.cfg" % self.mock_cfg
 
-        print(self.mock_cfg)
         if not self._checkConfig():
             raise DistNotAvailable
 
@@ -115,6 +115,10 @@ class mock(BuildProviderBase):
         if subprocess.call(cmd):
             if custom_cfg:
                 os.unlink(cfg)
+            # dump the build log to stdout
+            with open(os.path.join(self.mockpath, 'build.log'), 'rb') as f:
+                while os.sendfile(sys.stdout.buffer.fileno(), f.fileno(), None, 1 << 30) != 0:
+                    pass
             return False
         # mock rebuilds the srpm. so the "old" one isn't required anymore.
         os.unlink(srpm)
