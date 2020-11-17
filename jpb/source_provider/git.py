@@ -15,7 +15,7 @@ class GitSourceProvider(SourceProviderBase):
             self.commit = commit
         try:
             re.compile("git version (.*)").match(
-                subprocess.check_output(["git", "--version"])
+                subprocess.check_output(["git", "--version"]).decode('utf-8')
             )
         except OSError:
             print("Git not found or could not execute", file=sys.stderr)
@@ -30,7 +30,7 @@ class GitSourceProvider(SourceProviderBase):
         cmd.append("rev-parse")
         cmd.append("--short")
         cmd.append(self.commit)
-        return subprocess.check_output(cmd).rstrip()
+        return subprocess.check_output(cmd).rstrip().decode('utf-8')
 
     def commit_version_string(self):
         return "~1.git" + self.commit_short()
