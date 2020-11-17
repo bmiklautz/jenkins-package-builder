@@ -3,6 +3,7 @@ import subprocess
 from jpb.source_provider.base import SourceProviderBase
 import re
 import os
+import sys
 
 class GitSourceProvider(SourceProviderBase):
 	def __init__(self, repo, commit = ""):
@@ -15,7 +16,7 @@ class GitSourceProvider(SourceProviderBase):
 		try:
 			gv=re.compile("git version (.*)").match(subprocess.check_output(["git", "--version"]))
 		except OSError:
-			 print >> sys.stderr, "Git not found or could not execute"
+			 print("Git not found or could not execute", file=sys.stderr);
 			 sys.exit(1)
 
 	@classmethod

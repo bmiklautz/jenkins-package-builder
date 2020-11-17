@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name = "jpb",
-	version = "0.0.1",
+	version = "0.0.2",
 	packages = find_packages(),
 	#package_dir = {'':"lib"},
 	zip_safe = False,
@@ -18,6 +18,10 @@ setup(
 	author = "Bernhard Miklautz",
 	author_email  = "bernhard.miklautz@shacknet.at",
 	license = "MIT",
+	python_requires=">=3.5",
+	install_requires=[
+	"distro",
+	],
 	#keywords=
 	#url=
 )
