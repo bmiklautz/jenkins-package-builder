@@ -46,13 +46,13 @@ class createrepo(RepoProviderBase):
     def _get_rpm_arch(self, filename):
         if self.architecture:
             return self.architecture
-        return rpm.get_rpm_information(filename)["arch"]
+        return rpm.get_rpm_information(filename)["arch"].decode('utf-8')
 
     def cleanup_repo(self, keep):
         repo_base_path = os.path.join(self.repopath, self.reponame)
         cmd = [REPOMANAGE, "--old", "--keep", str(keep), repo_base_path]
         try:
-            files = subprocess.check_output(cmd)
+            files = subprocess.check_output(cmd).decode('utf-8')
         except subprocess.CalledProcessError as e:
             return False
         for f in files.split("\n"):
