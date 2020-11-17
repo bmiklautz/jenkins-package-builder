@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import with_statement
 from jpb.build_provider.base import BuildProviderBase as BuildProviderBase
 from jpb.build_provider.base import DistNotAvailable as DistNotAvailable
 from jpb.utils import get_env
