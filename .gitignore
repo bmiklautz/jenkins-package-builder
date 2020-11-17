@@ -2,3 +2,5 @@
 jpb.egg-info
 build
 dist
+venv
+.coverage

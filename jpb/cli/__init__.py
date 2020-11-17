@@ -8,7 +8,7 @@ import os
 import sys
 import glob
 import logging
-import platform
+import distro
 from jpb.repo_provider.createrepo import createrepo
 from jpb.repo_provider.createrepo import createrepo
 #from jpb.build_provider.build import build as pbbuild
@@ -109,12 +109,11 @@ def generate_binary_package():
 	arch = get_env("architecture")
 	distri = get_env("distribution")
 	logger.info("Building for distribution %s and architecture %s" % (distri, arch))
-	if (platform.dist()[0] == "fedora"):
+	dist_id = distro.id()
+	if 'fedora' in dist_id or 'debian' in dist_id or 'debian' in distro.like():
 		from jpb.build_provider.mock import mock as cbuilder
-	elif (platform.dist()[0] == "SuSE"):
+	elif 'suse' in dist_id:
 		from jpb.build_provider.build import build as cbuilder
-	elif (platform.dist()[0] == "debian"):
-		from jpb.build_provider.mock import mock as cbuilder
 	else:
 		logger.error("Currently unsupported build platform")
 		sys.exit(1)

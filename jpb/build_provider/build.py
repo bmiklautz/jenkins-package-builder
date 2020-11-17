@@ -99,7 +99,7 @@ class build(BuildProviderBase):
 		cmd = list(self.buildcmd)
 		cmd = cmd + [srpm] 
 		cmd = cmd + ["--stage=-bb"]
-		print cmd
+		print(cmd)
 
 		if subprocess.call(cmd):
 			return False

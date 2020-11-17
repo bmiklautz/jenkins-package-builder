@@ -31,7 +31,7 @@ class createrepo(RepoProviderBase):
 		try:
 			os.stat(self.repopath)
 		except:
-			print "Used repo path ", self.repopath
+			print("Used repo path ", self.repopath)
 			raise RepoPathNotFound 
 		self.architecture = architecture
 		if reponame:

@@ -15,9 +15,9 @@ def generate_build_version(origversion, build_number, commitversion):
 	return "%s~%s.%s%s" %(increase_version_number(origversion), create_timestamp(), build_number, commitversion)
 
 def get_env(name): 
-	if not os.environ.has_key(name): 
-		return ""  
-	return os.environ[name] 
+		if not name in os.environ:
+				return ""
+		return os.environ[name]
 
 def cleanup_workspace(types, excludes = []):
 	files =	os.listdir(".")

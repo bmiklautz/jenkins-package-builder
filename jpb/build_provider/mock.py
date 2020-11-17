@@ -77,11 +77,12 @@ class mock(BuildProviderBase):
     if not self.mock_cfg.endswith('.cfg'):
       self.mock_cfg = "/etc/mock/%s.cfg" % self.mock_cfg
 
+    print(self.mock_cfg)
     if not self._checkConfig():
         raise DistNotAvailable
 
     self.mockpath = os.path.join(self.workspace, MOCK_BASE_PATH)
-    self.basecmd = ["/usr/bin/mock", "--resultdir", self.mockpath]
+    self.basecmd = ["/usr/bin/mock", "--isolation=simple", "--resultdir", self.mockpath]
 
     self._cleanBuildDir()
 
