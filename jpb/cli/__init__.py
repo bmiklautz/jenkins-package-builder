@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from jpb.utils import *
+from jpb.utils import get_env, generate_build_version, cleanup_workspace
 from jpb.source_provider import get_source_provider
 import jpb.source_provider.rpmbuild as rpmbuild
 import jpb.utils.rpm as rpm
@@ -9,7 +9,6 @@ import sys
 import glob
 import logging
 import distro
-from jpb.repo_provider.createrepo import createrepo
 from jpb.repo_provider.createrepo import createrepo
 
 # from jpb.build_provider.build import build as pbbuild

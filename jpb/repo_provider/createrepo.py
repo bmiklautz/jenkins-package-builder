@@ -69,7 +69,6 @@ class createrepo(RepoProviderBase):
     def add_to_repo(self, filelist):
         if not filelist:
             raise NoFilesToAdd
-        repos = []
         logger = logging.getLogger("%s" % __name__)
         # repo_path is the location where the repo should go
         # might be /srv/repos/rpm/fedora/21
