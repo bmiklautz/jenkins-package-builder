@@ -2,7 +2,6 @@
 import subprocess
 from jpb.source_provider.base import SourceProviderBase
 import re
-import os
 import sys
 
 
@@ -15,7 +14,7 @@ class GitSourceProvider(SourceProviderBase):
         else:
             self.commit = commit
         try:
-            gv = re.compile("git version (.*)").match(
+            re.compile("git version (.*)").match(
                 subprocess.check_output(["git", "--version"])
             )
         except OSError:

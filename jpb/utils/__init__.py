@@ -2,8 +2,6 @@
 
 import time
 import os
-import jpb.utils.rpm
-import glob
 
 
 def create_timestamp():
@@ -24,7 +22,7 @@ def generate_build_version(origversion, build_number, commitversion):
 
 
 def get_env(name):
-    if not name in os.environ:
+    if name not in os.environ:
         return ""
     return os.environ[name]
 

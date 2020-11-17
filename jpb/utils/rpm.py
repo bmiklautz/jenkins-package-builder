@@ -47,11 +47,11 @@ class SpecFile:
         self.patches = []
         self.source_name = ""
         self.source_line = ""
-        name = re.compile("Name:\s*(.*)$")
-        version = re.compile("Version:\s*(.*)$")
-        release = re.compile("Release:\s*(.*)$")
-        source = re.compile("Source(\d*):\s*(\S+)$")
-        patch = re.compile("Patch(\d*):\s*(\S+)$")
+        name = re.compile(r"Name:\s*(.*)$")
+        version = re.compile(r"Version:\s*(.*)$")
+        release = re.compile(r"Release:\s*(.*)$")
+        source = re.compile(r"Source(\d*):\s*(\S+)$")
+        patch = re.compile(r"Patch(\d*):\s*(\S+)$")
         line = 0
         for i in self.content:
             match = version.match(i)
