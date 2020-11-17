@@ -16,8 +16,6 @@ def generate_src_package(specfile, files, searchdir=""):
     rpm.prepare_rootdir(topdir)
     for i in files:
         cppath = ""
-        print(i)
-        print(os.getcwd())
         if os.path.isfile(i):
             cppath = i
         elif searchdir and os.path.isfile(os.path.join(searchdir, i)):
@@ -26,9 +24,8 @@ def generate_src_package(specfile, files, searchdir=""):
             logger.error("Couldn't find source file: %s", i)
             return False
         shutil.copy(cppath, sourcedir)
-        subprocess.call(
-            ["rpmbuild", "--define", "_topdir " + topdir, "--nodeps", "-bs", specfile]
-        )
+    subprocess.call( ["rpmbuild", "--define", "_topdir " + topdir, "--nodeps",
+      "-bs", specfile])
     for filename in glob.glob(os.path.join(srpmdir, "*.src.rpm")):
         shutil.copy(filename, ".")
     rpm.clean_rootdir(topdir)
