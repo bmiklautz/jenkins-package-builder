@@ -30,7 +30,7 @@ class GitSourceProvider(SourceProviderBase):
         cmd.append("rev-parse")
         cmd.append("--short")
         cmd.append(self.commit)
-        return subprocess.check_output(cmd).rstrip().decode('utf-8')
+        return subprocess.check_output(cmd).decode('utf-8').rstrip()
 
     def commit_version_string(self):
         return "~1.git" + self.commit_short()

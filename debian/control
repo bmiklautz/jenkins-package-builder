@@ -2,7 +2,7 @@ Source: jenkins-package-builder
 Section: admin
 Priority: extra
 Maintainer: Ana Guerrero <ana-externe.guerrero@edf.fr>
-Build-Depends: debhelper (>= 9), python-minimal, python-setuptools
+Build-Depends: debhelper (>= 9), python3-minimal, python3-setuptools
 Standards-Version: 3.9.6
 Homepage: https://github.com/bmiklautz/jenkins-package-builder
 Vcs-Browser: https://github.com/edf-hpc/jenkins-package-builder
@@ -11,8 +11,9 @@ Package: jenkins-package-builder
 Architecture: all
 Depends: createrepo,
          mock,
-         python,
-         python-rpm,
+         python3,
+         python3-rpm,
+         python3-distro,
          yum-utils,
          ${misc:Depends},
          ${shlibs:Depends}

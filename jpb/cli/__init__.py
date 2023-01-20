@@ -38,7 +38,7 @@ def _common_init():
 def generate_source_package():
     _common_init()
     files = []
-    cleanup_workspace([".rpm", ".tar.gz"])
+    cleanup_workspace([".rpm", ".tar.gz", 'tar.xz'])
     rpm.clean_rootdir(rpm.TOPDIR)
     logger = logging.getLogger("%s:generate_source_package" % __name__)
     no_scm = get_env("JPB_SOURCE_NO_SCM")
@@ -84,7 +84,7 @@ def generate_source_package():
         logger.info("Generating updated spec file %s" % specfile)
         sf.write(specfile, tarball, release)
 
-    logger.info("Generating source package")
+    logger.info(f'Generating source package using tarball {tarball}')
     files.append(tarball)
     files = files + sf.get_additional_sources()
     if not rpmbuild.generate_src_package(specfile, files, sourcedir):
@@ -114,10 +114,9 @@ def generate_binary_package():
     arch = get_env("architecture")
     distri = get_env("distribution")
     logger.info("Building for distribution %s and architecture %s" % (distri, arch))
-    dist_id = distro.id()
-    if "fedora" in dist_id or "debian" in dist_id or "debian" in distro.like():
+    if distro.id() in ['fedora', 'rhel', 'centos', 'almalinux', 'debian', 'ubuntu']:
         from jpb.build_provider.mock import mock as cbuilder
-    elif "suse" in dist_id:
+    elif 'suse' in distro.id():
         from jpb.build_provider.build import build as cbuilder
     else:
         logger.error("Currently unsupported build platform")

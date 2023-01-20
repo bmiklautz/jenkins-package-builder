@@ -11,6 +11,7 @@ import logging
 def generate_src_package(specfile, files, searchdir=""):
     logger = logging.getLogger("%s" % __name__)
     topdir = rpm.TOPDIR
+    logger.debug(rpm.TOPDIR)
     sourcedir = os.path.join(topdir, "SOURCES")
     srpmdir = os.path.join(topdir, "SRPMS")
     rpm.prepare_rootdir(topdir)
